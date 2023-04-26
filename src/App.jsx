@@ -3,9 +3,18 @@ import './App.css'
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 import List from "./List";
 
+const getLoacalStorageData = () => {
+let list = localStorage.getItem('list')
+  if(list){
+    return JSON.parse(localStorage.getItem('list'))
+  } else {
+    return []
+  }
+}
+
 const App = () => {
   const [name, setName] = useState('')
-  const [list, setList] = useState([])
+  const [list, setList] = useState(getLoacalStorageData())
   const [alert, setAlert] = useState(true)
 
 
@@ -40,6 +49,10 @@ const timeout = setTimeout(() => {
 
   console.log(list)
 
+  useEffect(() => {
+    localStorage.setItem('list', JSON.stringify(list))
+  },[list])
+
   alert === false ?  document.body.style.backgroundColor = '#ED2B2A': document.body.style.backgroundColor =  '#212A3E'
   return (
     <section className={`todos-container` }>
@@ -55,15 +68,20 @@ const timeout = setTimeout(() => {
           />
           <button type="submit" className="btn-submit">Submit</button>
         </form>
-      <List items={list} removeItem = {removeItem} />
+        {
+          list.length > 0 &&
+
+          <List items={list} removeItem = {removeItem} />
+        }
       {
         list.length > 0 &&
+        
 
         <button className="btn-submit" onClick={() => {
-            setList([])
-            setAlert(false)
-          }
-        }>Clear All</button>
+          setList([])
+          setAlert(false)
+        }
+      }>Clear All</button>
         }
     </section>
   )
