@@ -73,4 +73,7 @@ body{
     .todos-container{
         width: 600px;
     }
+    .item-container{
+        justify-content: space-evenly;
+    }
 }
